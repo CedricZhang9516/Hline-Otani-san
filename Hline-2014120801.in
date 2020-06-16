@@ -1,0 +1,561 @@
+# set the background to white
+	g4ui when=4 "/vis/viewer/set/background 1 1 1"
+* JD amusr+deeme
+#
+# 2013032201: HS1～HB2のソレノイドと変更電磁石の磁場分布を入力
+# 2013040301: HQ1、HQ2、HQ3のフリンジをEngeパラメータで入力
+# 2013041001: rectangularではsigmaXとsigmaYが無効だったソースを変更
+#             HS3, HB2, HQ123を調整
+# 2013041201: HQ123の位置を下流に移動
+# 2013050101: HQ123, HQ456のengeパラメータの変更
+# 2013103101: short versionに変更
+# 2013111101: MuHFS, DeeMe, g-2に特化した部分を分離
+# 2013112501: g-2収束部をエンドガード付きの磁場分布に変更
+# 2013112502: g-2収束部を単純なソレノイドにした場合
+# 2014010901: g-2収束部をG2EDM.inに移す。
+# 2014120801: HS1エリア縮小案に対応（ExpHall#1_20141208）
+
+#fieldntuple FNTuple category=FNT format=root filename=Hline-field.root \
+#	     x=0.0,500.0,10.0 y=0.0 z=-100.0,3400.0,10.0 exit=0
+#fieldntuple FNTuple category=FNT format=root filename=Hline-field.root \
+#	     x=-1000.0,12000.0,10.0 y=0.0 z=0.0,25000.0,10.0 exit=0
+
+# MuHFS: type=1
+# DeeMe: type=2
+# G-2/EDM: type=3
+
+g4ui when = 4 "/vis/viewer/set/background 1 1 1 "
+param type=3
+param nevent=1000000
+#param nevent=3000
+param fit=0
+param LargeTriplet=0
+param TOYODASAN=0
+#0: normal
+#1: r+25
+#2: r+50
+param pscale=1
+param hqtriplet_scale=1.25*$pscale
+if $fit==1
+param histoFile=test
+endif
+if $fit==0
+#param histoFile=G-2EDM_output
+#param histoFile=test
+#param histoFile=G-2EDM_output_1e6_gendat_afterfit_SEPON_04
+param histoFile=$HIST
+#param histoFile=G-2EDM_output_2e5_gendat_fit_check_withsep150315
+#param histoFile=G-2EDM_output_2e5_gendat_fit_check_150315
+#param histoFile=tmp
+#param histoFile=G-2EDM_output_2e5_gendat_nominal_pscale
+endif
+if $fit==0
+#nominal setting, after tune, 150227
+
+
+param hs1a_current=4.459
+param hs1b_current=0.485
+param hb1_current=-0.682
+param hs2_current=11.81
+param hs3_current=-8.205
+param hs4_current=11.04
+#param hs40_current=0.42 
+#param hs4_current=-0.42 
+#for testTOYODASAN
+param hq4_grad=-0.324*$hqtriplet_scale
+param hq5_grad=0.521*$hqtriplet_scale
+param hq6_grad=-0.4524*$hqtriplet_scale
+
+#Namx nevt
+#param hs1a_current=4.4167
+#param hs1b_current=0.58574
+#param hb1_current=-0.68946
+#param hs2_current=10.188
+#param hs3_current=-9.3954
+#param hs4_current=11.83
+#param hq4_grad=-0.42927*$hqtriplet_scale
+#param hq5_grad=0.53889*$hqtriplet_scale
+#param hq6_grad=-0.50601*$hqtriplet_scale
+
+#large aperture (r+25), after tune, 150303
+#param hs1a_current=4.461
+#param hs1b_current=0.4844
+#param hb1_current=-0.682
+#param hs2_current=11.896
+#param hs3_current=-8.295
+#param hs4_current=11.363
+#param hq4_grad=-0.3253*$hqtriplet_scale
+#param hq5_grad=0.5216*$hqtriplet_scale
+#param hq6_grad=-0.4491*$hqtriplet_scale
+
+#large aperture (r+50), after tune, 150304
+#param hs1a_current=4.4590
+#param hs1b_current=0.47948
+#param hb1_current=-0.68490
+#param hs2_current=11.760
+#param hs3_current=-8.3118
+#param hs4_current=11.472
+#param hq4_grad=-0.31885*$hqtriplet_scale
+#param hq5_grad=0.52537*$hqtriplet_scale
+#param hq6_grad=-0.45607*$hqtriplet_scale
+
+#before fit, after momentum scale(28.5/31.5)
+#param hs1a_current=4.522
+#param hs1b_current=0.482
+#param hb1_current=-0.6786
+#param hs2_current=10.043
+#param hs3_current=-10.043
+#param hs4_current=11.31
+#param hq4_grad=-0.434*$hqtriplet_scale
+#param hq5_grad=0.498*$hqtriplet_scale
+#param hq6_grad=-0.434*$hqtriplet_scale
+
+#after fit, only fitting vaiables downstream from HB2
+#param hs1a_current=4.522
+#param hs1b_current=0.482
+#param hb1_current=-0.6786
+#param hs2_current=10.043
+#param hs3_current=-10.043
+#param hs4_current=11.575
+#param hq4_grad=-0.4335*$hqtriplet_scale
+#param hq5_grad=0.5047*$hqtriplet_scale
+#param hq6_grad=-0.5036*$hqtriplet_scale
+
+#combination
+#param hs1a_current=4.522
+#param hs1b_current=0.482
+#param hb1_current=-0.6786
+#param hs2_current=10.043
+#param hs3_current=-10.043
+#param hs4_current=12.04
+#param hq4_grad=-0.324*$hqtriplet_scale
+#param hq5_grad=0.521*$hqtriplet_scale
+#param hq6_grad=-0.4524*$hqtriplet_scale
+
+#fit with HS2=-HS3, HS1&HB1 is fixed
+#param hs1a_current=4.522
+#param hs1b_current=0.482
+#param hb1_current=-0.6786
+#param hs2_current=9.4602
+#param hs3_current=-9.4602
+#param hs4_current=9.8297
+#param hq4_grad=-0.38055*$hqtriplet_scale
+#param hq5_grad=0.52020*$hqtriplet_scale
+#param hq6_grad=-0.52856*$hqtriplet_scale
+
+
+#for fitting with setup accomodated with Toyoda-san
+#param hs1a_current=4.6167
+#param hs1b_current=0.49598
+#param hb1_current=-0.63984
+#param hs2_current=12.404
+#param hs3_current=-9.6398
+#param hs4_current=0.97223
+#param hs40_current=0.94276
+#param hq4_grad=-0.53749*$hqtriplet_scale
+#param hq5_grad=0.55225*$hqtriplet_scale
+#param hq6_grad=-0.49798*$hqtriplet_scale
+
+
+#param hs1a_current=4.6167
+#param hs1b_current=0.49598
+#param hb1_current=-0.63984
+#param hs2_current=12.404
+#param hs3_current=-9.6398
+#param hs4_current=0.97223
+#param hs40_current=0.94276
+#param hs4_current=2.97223
+#param hs40_current=-2.94276
+#param hs4_current=1.97223
+#param hs40_current=-1.94276
+#param hq4_grad=-0.53749*$hqtriplet_scale
+#param hq5_grad=0.55225*$hqtriplet_scale
+#param hq6_grad=-0.49798*$hqtriplet_scale
+
+
+#param hs1a_current=4.7845
+#param hs1b_current=0.56341
+#param hb1_current=-0.67869
+#param hs2_current=10.727
+#param hs3_current=-10.776
+#param hs4_current=10.810
+#param hq4_grad=-0.50395*$hqtriplet_scale
+#param hq5_grad=0.58149*$hqtriplet_scale
+#param hq6_grad=-0.64236*$hqtriplet_scale
+
+
+endif
+if $fit==1
+param hs1a_current=$S1A
+param hs1b_current=$S1B
+param hb1_current=$B1
+param hs2_current=$S2
+#param hs2_current=-$S3
+param hs3_current=$S3
+param hs4_current=$S4
+if $TOYODASAN==2
+param hs40_current=$S40
+endif
+param hq4_grad=$Q4*$hqtriplet_scale
+param hq5_grad=$Q5*$hqtriplet_scale
+param hq6_grad=$Q6*$hqtriplet_scale
+#param hq7_grad=$Q7*$hqtriplet_scale
+endif
+
+
+start x=0.0 y=0.0 z=0.0 radiusCut=1000.0
+
+param deltaChord=0.01
+param deltaIntersection=0.01
+
+param hbcolor=0.6,0,0
+param kickcolor=0.5,0,0.5
+param blkcolor=0.9,0.9,1.0
+
+param load=1
+if $type==1
+   include MuHFS.in
+elseif $type==2
+   include DeeMe.in
+elseif $type==3
+   include G-2EDM.in
+endif
+
+param pi=3.141592653
+
+beamlossntuple blnt coordinates=c format=root
+
+material Pb A=207.19  Z=82  density=11.35
+material H A=1 Z=1 density=0.00008988
+material C A=12.01 Z=6 density=2.1
+material N A=14.01 Z=7 density=0.001251
+material O A=16.00 Z=8 density=0.001429
+material kapton  density=1.42 H,0.026362 C,0.691133 N,0.073270 O,0.209235
+
+### DEFINE ###
+coil default material=Cu
+solenoid default alternate=0 color=0,0,1
+
+# virtual detectors
+virtualdetector det_r150 radius=150.0 color=0,1,0 length=1
+virtualdetector det_r198 radius=198.0 color=0,1,0 length=1
+virtualdetector det_r200 radius=200.0 color=0,1,0 length=1
+virtualdetector det_r300 radius=300.0 color=0,1,0 length=1
+virtualdetector front_det  radius=330.0 color=0,1,0 length=1
+virtualdetector det_gvfoil radius=107.5 color=0,1,0 length=1
+
+if ($type==1)+($type==3)
+## shields
+   tubs front_shield innerRadius=125.0 outerRadius=1200.0 \
+                     length=10.0 material=Pb color=1,1,1 kill=1
+else
+## target
+#   tubs target innerRadius=130. outerRadius=190. length=20. material=SiC
+   tubs target innerRadius=130. outerRadius=190. length=20. material=Vacuum
+
+## shields
+   tubs front_shield innerRadius=125.0 outerRadius=600.0 \
+                     length=10.0 material=Pb color=invisible kill=$kill
+endif
+
+# HS1
+#param hs1_IR=300.0 hs1_OR=450.0 hs1_Len=1500.
+##param hs1_current=0.165/(4.e-7*$pi)/((($hs1_OR-$hs1_IR)*$hs1_Len/900.)/($hs1_Len/1000.))/900.0
+#param hs1_FZ=800.0
+#param hs1_CX=0.0 hs1_CZ=$hs1_FZ+$hs1_Len/2
+#coil     hs1_coil innerRadius=$hs1_IR outerRadius=$hs1_OR length=$hs1_Len
+#solenoid hs1      coilName=hs1_coil current=$hs1_current kill=1
+
+#coil     hs1a_coil innerRadius=282.0 outerRadius=498.0 length=192.0
+#solenoid hs1a      coilName=hs1a_coil current=$hs1a_current kill=1
+tubs hs1a_coil innerRadius=282.0 outerRadius=498.0 length=192.0 material=Fe color=0,0,1 kill=1
+fieldmap hs1a file=HS1i_coil1.BLFieldMap current=$hs1a_current
+
+#coil     hs1b_coil innerRadius=336.0 outerRadius=528.0 length=192.0
+#solenoid hs1b      coilName=hs1b_coil current=$hs1b_current kill=1
+tubs hs1b_coil innerRadius=336.0 outerRadius=528.0 length=192.0 material=Fe color=0,0,1 kill=1
+fieldmap hs1b file=HS1i_coil2.BLFieldMap current=$hs1b_current
+
+#coil     hs1c_coil innerRadius=390.0 outerRadius=534.0 length=144.0
+#solenoid hs1c      coilName=hs1c_coil current=$hs1c_current kill=1
+tubs hs1c_coil innerRadius=390.0 outerRadius=534.0 length=944.0 material=Fe color=0,0,1 kill=1
+fieldmap hs1c file=HS1i_coil3-8.BLFieldMap current=$hs1c_current
+
+# HB1
+# 30-deg bend
+param hb1_bl=800.0
+param hb1_fl=$hb1_bl*6./$pi*sin(15/180*$pi)*2
+param hb1_FZ=4955.0
+param hb1_CX=$hb1_bl*6./$pi*(1-cos(15/180*$pi))+30.
+param hb1_CZ=$hb1_FZ+$hb1_bl*6./$pi*tan(15/180*$pi)
+#genericbend HB1 By=$hb1_by \
+#            fieldWidth=400.0 fieldHeight=300.0 fieldLength=$hb1_bl \
+#            ironWidth=600.0 ironHeight=600.0 \
+#            ironLength=$hb1_fl kill=1 openAperture=0 \
+#            fringe=0.3622,3.853,-1.095,0.4314,-0.1206,0.1129e-1
+box hb1_top height=150.0 length=$hb1_bl width=900. material=Fe color=$hbcolor kill=1
+box hb1_bot height=150.0 length=$hb1_bl width=900. material=Fe color=$hbcolor kill=1
+box hb1_left height=300.0 length=$hb1_bl width=150. material=Fe color=$hbcolor kill=1
+box hb1_right height=300.0 length=$hb1_bl width=150. material=Fe color=$hbcolor kill=1
+#fieldexpr hb1_b factorB=$hb1_by factorE=0 \
+#	  Bx=0. By=(1.-x*$hb1_n/($hb1_bl*6./$pi)) Bz=0. \
+#	  Ex=0. Ey=0. Ez=0. \
+#	  length=$hb1_bl width=600. height=300.
+fieldmap hb1_b file=HB1_mod4_hf_s28d40_s24u25.BLFieldMap current=$hb1_current
+
+# HGV1
+param hgv1_FZ=$hb1_FZ+$hb1_bl+655.0
+param hgv1_Len=87.0
+tubs hgv1 innerRadius=160.0 outerRadius=300.0 length=$hgv1_Len material=Fe color=1,1,1 kill=1
+
+tubs Al_sheet innerRadius=0.0 outerRadius=150.0 length=0.012 material=Al color=1,0,1
+tubs kapton_sheet innerRadius=0.0 outerRadius=160.0 length=0.050 material=kapton color=1,0,0
+
+
+# HS2
+param hs2_IR=350.0 hs2_OR=360.0 hs2_Len=1500.
+param hs2_FZ=$hb1_FZ+$hb1_bl+2000.0
+param hs2_CX=0.0 hs2_CZ=$hs2_FZ+$hs2_Len/2
+#param hs2_current=0.120/(4.e-7*$pi)/((($hs2_OR-$hs2_IR)*$hs2_Len/900.)/($hs2_Len/1000.))/900.0
+#coil     hs2_coil innerRadius=$hs2_IR outerRadius=$hs2_OR length=$hs2_Len
+#solenoid hs2      coilName=hs2_coil current=$hs2_current kill=1
+tubs hs2_duct innerRadius=300.0 outerRadius=350.0 length=$hs2_Len material=Fe color=1,1,1 kill=1
+fieldmap hs2 file=HS2b.BLFieldMap current=$hs2_current
+
+# Separator
+param hsep_Len=400.0
+param hsep_W=500.0
+param hsep_H=300.0
+param hsep_FZ=$hs2_FZ+$hs2_Len+2225.0
+param hsep_CZ=$hsep_FZ+$hsep_Len/2.
+box hsep_top height=150.0 length=$hsep_Len width=$hsep_W+300. material=Fe color=1,1,0 kill=1
+box hsep_bot height=150.0 length=$hsep_Len width=$hsep_W+300. material=Fe color=1,1,0 kill=1
+box hsep_left height=$hsep_H+300.0 length=$hsep_Len width=150. material=Fe color=1,1,0 kill=1
+box hsep_right height=$hsep_H+300.0 length=$hsep_Len width=150. material=Fe color=1,1,0 kill=1
+fieldexpr hsep_field factorB=$hsep_bx factorE=$hsep_ey \
+          Bx=1. By=0. Bz=0. \
+          Ex=0. Ey=1. Ez=0. \
+          length=$hsep_Len width=$hsep_W height=$hsep_H
+
+# HS3
+param hs3_IR=350.0 hs3_OR=360.0 hs3_Len=1500.
+param hs3_FZ=$hs2_FZ+$hs2_Len+3875
+param hs3_CX=0.0 hs3_CZ=$hs3_FZ+$hs3_Len/2
+#param hs3_current=-0.930/(4.e-7*$pi)/((($hs3_OR-$hs3_IR)*$hs3_Len/900.)/($hs3_Len/1000.))/900.0
+#coil     hs3_coil innerRadius=$hs3_IR outerRadius=$hs3_OR length=$hs3_Len
+#solenoid hs3      coilName=hs3_coil current=$hs3_current kill=1
+tubs hs3_duct innerRadius=300.0 outerRadius=350.0 length=$hs3_Len material=Fe color=1,1,1 kill=1
+fieldmap hs3 file=HS2b.BLFieldMap current=$hs3_current
+
+# HB2
+# 45-deg bend
+param hb2_FX=0.0
+param hb2_FZ=$hs3_FZ+$hs3_Len+2360
+#param hb2_cr=$hb2_bl*4./$pi
+#idealsectorbend HB2 By=$hb2_by angle=45 fieldCenterRadius=$hb2_cr \
+#                fieldInnerRadius=$hb2_cr-150.0 fieldOuterRadius=$hb2_cr+150.0 \
+#                fieldHeight=245.0 \
+#                ironInnerRadius=$hb2_cr-300.0 ironOuterRadius=$hb2_cr+300.0 \
+#                ironHeight=600.0 kill=1 ironColor=0,0,1
+param hb2_cr=1000.0
+param hb2_bl=$hb2_cr*pi/4
+param hb2_CX=$hb2_cr*(1-cos(22.5/180*pi))
+param hb2_CZ=$hb2_FZ+$hb2_cr*pi/4*0.5
+fieldmap hb2_b file=HB2e.BLFieldMap current=$hb2_current
+# HB2 yoke
+box hb2_top height=150.0 length=$hb2_bl width=1190. \
+            material=Fe color=$hbcolor kill=1
+box hb2_bot height=150.0 length=$hb2_bl width=1190. \
+            material=Fe color=$hbcolor kill=1
+box hb2_left height=250.0 length=$hb2_bl width=150. \
+            material=Fe color=$hbcolor kill=1
+box hb2_right height=250.0 length=$hb2_bl width=150. \
+            material=Fe color=$hbcolor kill=1
+
+# H1 area
+if ($type==1)+($type==2)
+   # HBB1 Blocker
+   param hbb1_Len=200.0
+   param hbb1_FZ=$hb2_FZ+$hb2_bl+765.0
+   param hbb1_CZ=$hbb1_FZ+$hbb1_Len/2.
+   tubs hbb1 innerRadius=200.0 outerRadius=400.0 length=$hbb1_Len material=Fe color=$blkcolor kill=1
+
+   # HQ1
+   # Quad Triplet
+   param hq1_Len=400.
+   param hq1_FLen=582.773
+   param hq1_FX=0.0
+   param hq1_FZ=$hb2_FZ+$hb2_bl+1480
+   param hq1_CZ=$hq1_FZ+$hq1_Len/2.
+   genericquad HQ1 fieldLength=$hq1_FLen apertureRadius=200. \
+                   poleTipRadius=175.000 gradient=$hq1_grad \
+		   ironLength=$hq1_Len ironRadius=300.0 ironColor=0,0,1 \
+                   fringe=0.2490,7.423,-2.125,1.119,-3.952,2.217
+
+   # HQ2
+   # Quad Triplet
+   param hq2_Len=400.
+   param hq2_FLen=582.773
+   param hq2_FX=0.0
+   param hq2_FZ=$hq1_FZ+$hq1_Len+250
+   param hq2_CZ=$hq2_FZ+$hq2_Len/2.
+   genericquad HQ2 fieldLength=$hq2_FLen apertureRadius=200. \
+                   poleTipRadius=175.000 gradient=$hq2_grad \
+ 		   ironLength=$hq2_Len ironRadius=300.0 ironColor=0,0,1 \
+                   fringe=0.2490,7.423,-2.125,1.119,-3.952,2.217
+
+   # HQ3
+   # Quad Triplet
+   param hq3_Len=400.
+   param hq3_FLen=582.773
+   param hq3_FX=0.0
+   param hq3_FZ=$hq2_FZ+$hq2_Len+250
+   param hq3_CZ=$hq3_FZ+$hq3_Len/2.
+   genericquad HQ3 fieldLength=$hq3_FLen apertureRadius=200. \
+                   poleTipRadius=175.000 gradient=$hq3_grad \
+	           ironLength=$hq3_Len ironRadius=300.0 ironColor=0,0,1 \
+                   fringe=0.2490,7.423,-2.125,1.119,-3.952,2.217
+
+  param load=2
+  if $type==1
+     include MuHFS.in
+  elseif $type==2
+     include DeeMe.in
+  endif
+# H2 area
+elseif $type==3
+  param load=2
+  include G-2EDM.in
+endif
+
+
+#
+# place
+#
+## target
+place det_r150 z=1.0 rename=target_det
+
+place front_shield z=601.0 x=0.0
+place front_det    z=654.0
+
+#place det_r300 z=800.0  x=0.0 rename=hs1ent_det
+#place hs1 x=$hs1_CX z=$hs1_CZ
+#place det_r300 z=2300.0 x=0.0 rename=hs1ext_det
+
+place hs1a z=758.0 x=0.0
+place hs1a_coil z=758.0 x=0.0
+place hs1b z=972.5 x=0.0
+place hs1b_coil z=972.5 x=0.0
+place hs1c z=1561.0 x=0.0
+place hs1c_coil z=1561.0 x=0.0
+
+place det_r300 z=1380.5 rename=hs1_det1
+place det_r300 z=1880.5 rename=hs1_det2
+place det_r300 z=2380.5 rename=hs1_det3
+place det_r300 z=2880.5 rename=hs1_det4
+
+
+place det_r300 z=3209.5 rename=hs1_det5
+place det_r300 z=3660.15 rename=hs1_exit
+#for killing escaping muon, 150226
+tubs kill_duct innerRadius=300.0 outerRadius=2050.0 length=100 material=Fe color=1,0,0 kill=1
+place kill_duct z=$hb1_FZ-200 rename=killduct
+
+#place Al_sheet     z=4672.65
+
+#place det_r300 z=$hb1_FZ-100. rename=hb1ent_det
+#place HB1 z=$hb1_CZ x=$hb1_CX rotation=Y15.0
+place hb1_b z=$hb1_CZ x=$hb1_CX rotation=Y195.0
+place hb1_top z=$hb1_CZ x=$hb1_CX y=225. rotation=Y15.0
+place hb1_bot z=$hb1_CZ x=$hb1_CX y=-225. rotation=Y15.0
+place hb1_left z=$hb1_CZ-375*sin(15/180*$pi) x=$hb1_CX+375*cos(15/180*$pi) rotation=Y15.0
+place hb1_right z=$hb1_CZ+375*sin(15/180*$pi) x=$hb1_CX-375*cos(15/180*$pi) rotation=Y15.0
+cornerarc z=$hb1_FZ centerRadius=$hb1_bl*6/$pi angle=30
+place det_r300 z=$hb1_FZ+$hb1_bl+100. rename=hb1ext_det
+
+# HGV1
+place det_r198 z=$hgv1_FZ rename=hgv1ent_det 
+place hgv1 z=$hgv1_FZ+$hgv1_Len/2.0
+place det_r198 z=$hgv1_FZ+551.0 rename=hgv1exit_det 
+
+place det_r300 z=$hs2_FZ rename=hs2ent_det
+place hs2 x=$hs2_CX z=$hs2_CZ
+place hs2_duct x=$hs2_CX z=$hs2_CZ
+place det_r300 z=$hs2_FZ+$hs2_Len rename=hs2ext_det
+
+tubs kill_duct2 innerRadius=300.0 outerRadius=1550.0 length=100 material=Fe color=1,0,0 kill=1
+place kill_duct2 z=$hs2_FZ-150 rename=killduct2_2
+
+place det_r300 z=$hsep_FZ-10. rename=hsepent_det
+place hsep_field z=$hsep_CZ
+place hsep_top z=$hsep_CZ y=$hsep_H/2.+75.
+place hsep_bot z=$hsep_CZ y=-$hsep_H/2.-75.
+place hsep_left z=$hsep_CZ x=$hsep_W/2.+75.
+place hsep_right z=$hsep_CZ x=-$hsep_W/2.-75.
+place det_r300 z=$hsep_FZ+$hsep_Len+10. rename=hsepext_det
+
+#place det_r300 z=($hs2_FZ+$hs2_Len+$hs3_FZ)/2. rename=hs2_3_det
+
+place det_r300 z=$hs3_FZ rename=hs3ent_det
+place hs3 x=$hs3_CX z=$hs3_CZ
+place hs3_duct x=$hs3_CX z=$hs3_CZ
+place det_r300 z=$hs3_FZ+$hs3_Len rename=hs3ext_det
+
+place kill_duct2 z=$hs3_FZ-150 rename=killduct2
+
+
+place det_r300 z=$hb2_FZ-10. rename=hb2ent_det
+#place HB2 x=$hb2_FX z=$hb2_FZ
+place hb2_b z=$hb2_CZ x=$hb2_CX rotation=Y22.5
+# HB2 yoke
+place hb2_top z=$hb2_CZ x=$hb2_CX y=200. rotation=Y22.5
+place hb2_bot z=$hb2_CZ x=$hb2_CX y=-200. rotation=Y22.5
+place hb2_left z=$hb2_CZ-520*sin(22.5/180.*$pi) x=$hb2_CX+520.*cos(22.5/180*$pi) rotation=Y22.5
+place hb2_right z=$hb2_CZ+520*sin(22.5/180.*pi) x=$hb2_CX-520.*cos(22.5/180*$pi) rotation=Y22.5
+
+# H1 area
+if ($type==1)+($type==2)
+   cornerarc z=$hb2_FZ centerRadius=$hb2_cr angle=45
+   place det_r300 z=$hb2_FZ+$hb2_bl+10. rename=hb2ext_det
+
+# HBB1
+   place hbb1 z=$hbb1_CZ
+
+   place det_r300 z=$hb2_FZ+$hb2_bl+10. rename=hb2ext_det
+
+   place det_r300 z=$hq1_FZ-10. rename=hq1ent_det
+   place HQ1 x=$hq1_FX z=$hq1_CZ
+
+   place det_r300 z=$hq2_FZ-10. rename=hq2ent_det
+   place HQ2 x=$hq2_FX z=$hq2_CZ
+
+   place det_r300 z=$hq3_FZ-10. rename=hq3ent_det
+   place HQ3 x=$hq3_FX z=$hq3_CZ
+   place det_r300 z=$hq3_FZ+$hq3_Len+10. rename=hq3ext_det
+
+   param load=3
+   if $type==1
+      include MuHFS.in
+   elseif $type==2
+      include DeeMe.in
+   endif
+# H2 area
+elseif $type==3
+   place det_r300 z=$hb2_FZ+950. rename=hb2ext_det
+
+   param load=3
+   include G-2EDM.in
+endif
+
+#if ($type==1)+($type==3)
+#   profile file=$histoFile-profile.txt particle=mu+ require=sqrt(x*x+y*y)<500. \
+#   	   zloop=0:35000:100
+#else
+#   profile file=$histoFile-profile.txt particle=e- \
+#           require=sqrt(x*x+y*y)<500. \
+#           zloop=0:30000:100
+#endif
+
+printfield type=print field=Bz layout=zx \
+x=0 y=0 z=0 t=0 \
+drow=10 dcol=100 nrow=300 ncol=5

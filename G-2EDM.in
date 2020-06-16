@@ -1,0 +1,366 @@
+ # g-2/EDM beam optics
+# 2013120601: HS2,3とHS1,4を全て同じ向きに変更
+# 2013120602: HS2,3とHS1,4を従来と同じ逆向きに変更
+# 2014010901: 2013120601をベースとして、g-2収束部をHlineから移動
+# 2014052101: 2014010901をベースとして、HS2～HS6を微調
+# 2014120801: HS1エリア縮小案に対応（ExpHall#1_20141208）
+# 2014121101: オプティクスをチューン
+
+###########################################################
+#################### parameter section ####################
+###########################################################
+if $load==1
+
+#param histoFile=G-2EDM_output
+#param histoFile=test
+
+#param PZ=30.0
+#param PZ=30.0
+#param pscale=$PZ/30.0
+#param pscale=28.5/31.5
+param pscale=1.0
+#1.0 for 30 MeV/c
+
+param hs1_scale=1.0
+#param hs1a_current=3000./24.5/24.5*$pscale
+#param hs1b_current=320/24.5/24.5*$pscale
+
+param hs1c_current=0.0
+# Ideal field : 30/300/(0.8*6/pi)=0.6545
+#param hb1_by=-0.06545*$pscale
+#param hb1_current=-500./10./13.*0.195*$pscale
+#param hs2_current=0.74*15*$pscale
+#param hsep_bx=0.0
+#param hsep_ey=0.0
+#param hsep_bx=0.0124
+#param hsep_bx=-0.0153
+#param hsep_ey=0.97
+param hsep_bx=-0.0257
+param hsep_ey=2.0
+#otani
+#param hb2_by=0.
+param hb2_current=0.0
+param hq1_grad=0.
+param hq2_grad=0.
+param hq3_grad=0.
+#param hqtriplet_scale=1.25*$pscale
+#  These parameters for focusing by Q magnet only
+#param hs1a_current=3000./24.5/24.5*$pscale
+#param hs1b_current=320/24.5/24.5*$pscale
+#param hs4_current=12.5*$pscale
+#param hs3_current=-0.74*15*$pscale
+#param hs2_current=0.74*15*$pscale
+#param hq4_grad=-0.48*$hqtriplet_scale
+#param hq5_grad=0.55*$hqtriplet_scale
+#param hq6_grad=-0.48*$hqtriplet_scale
+#after tuning with initial parameters from Kawamura-san, 150208
+#param hs1a_current=4.459
+#param hs1b_current=0.485
+#param hb1_current=-0.682
+#param hs2_current=11.809
+#param hs3_current=-8.205
+#param hs4_current=11.040
+#param hq4_grad=-0.3238*$hqtriplet_scale
+#param hq5_grad=0.5208*$hqtriplet_scale
+#param hq6_grad=-0.4524*$hqtriplet_scale
+
+
+
+
+
+
+# w/o yoke+end guard
+#param hs6_current=4.00*15*0.75
+# w/ yoke+end guard
+param hs6_current=4.00*15*0.65*$pscale
+
+#..point source
+# beam rectangular particle=mu+ meanMomentum=30. \
+#      nEvents=$nevent firstEvent=1 lastEvent=$nevent \
+#      beamZ=0. beamX=0. beamY=0. sigmaX=0.0 sigmaY=0.0 \
+#      sigmaXp=-0.3 sigmaYp=-0.3 sigmaP=0. meanT=0.0 sigmaT=0.0
+
+#..Jaap standard
+# beam rectangular particle=mu+ meanMomentum=30. \
+#      nEvents=$nevent firstEvent=1 lastEvent=$nevent \
+#      beamZ=0. beamX=0. beamY=0. sigmaX=7.5 sigmaY=15.0 \
+#      sigmaXp=-0.180 sigmaYp=-0.180 sigmaP=0. meanT=0.0 sigmaT=0.0
+
+#..Muto-san standard
+#beam gaussian particle=mu+ meanMomentum=30.0*28.5/31.5 \
+#     nEvents=$nevent firstEvent=1 lastEvent=$nevent \
+#     sigmaP=-3.0 \
+#     beamZ=0.0 \
+#     beamX=0.0 sigmaX=4./2. sigmaXp=-0.25 \
+#     beamY=0.0 sigmaY=4. sigmaYp=-0.25 \
+#     meanT=0.0 sigmaT=0.01
+#wide check
+#beam gaussian particle=mu+ meanMomentum=$PZ \
+#     nEvents=$nevent firstEvent=1 lastEvent=$nevent \
+#     sigmaP=-8.0 \
+#     beamZ=0.0 \
+#     beamX=0.0 sigmaX=4./2. sigmaXp=-0.25 \
+#     beamY=0.0 sigmaY=4. sigmaYp=-0.25 \
+#     meanT=0.0 sigmaT=0.01
+#beam ascii filename=g4input_150218.dat
+#beam ascii filename=g4input_150218_short.dat
+if $fit==0
+#beam ascii filename=g4input_150222_2e5.dat
+#beam ascii filename=g4input_150222_2e5_first2e4.dat
+#beam ascii filename=g4input_150315_1e6.dat
+#beam ascii filename=g4input_150315_1e6_01.dat
+#beam ascii filename=g4input_150315_1e6_00_short.dat
+
+#beam ascii filename=g4input_200528_1e6_00.dat
+#beam ascii filename=g4input/$BEAM
+beam ascii filename=/home/had/zhangce/g-2/Hline/Otani-san/g4input/$BEAM
+
+#beam ascii filename=g4input_150222_short2.dat
+endif
+if $fit==1
+beam ascii filename=g4input_150222_short2.dat
+endif
+#physics LHEP
+param worldMaterial=Vacuum
+
+endif
+
+###########################################################
+#################### magnet definition ####################
+###########################################################
+if $load==2
+
+   # HBB2 Blocker
+   param hbb2_Len=400.0
+   param hbb2_FZ=$hs3_FZ+$hs3_Len+4850
+   param hbb2_CZ=$hbb2_FZ+$hbb2_Len/2.
+   tubs hbb2 innerRadius=200.0 outerRadius=400.0 length=$hbb2_Len material=Fe color=$blkcolor kill=1
+
+   # HS4
+if $TOYODASAN==0
+   param hs4_IR=350.0 hs4_OR=360.0 hs4_Len=1500.
+   param hs4_FZ=$hs3_FZ+$hs3_Len+5875.0
+   param hs4_CX=0.0 hs4_CZ=$hs4_FZ+$hs4_Len/2
+   tubs hs4_duct innerRadius=300.0 outerRadius=350.0 length=$hs4_Len material=Fe color=1,1,1 kill=1
+   fieldmap hs4 file=BLFieldMap/HS2b.BLFieldMap current=$hs4_current
+
+
+#   param hs4_IR=250.0 hs4_OR=400.0 hs4_Len=500.0
+#   param hs4_FZ=$hs3_FZ+$hs3_Len+5875.0
+#   param hs4_CX=0.0 hs4_CZ=$hs4_FZ+$hs4_Len/2.
+#   coil     hs4_coil innerRadius=$hs4_IR outerRadius=$hs4_OR length=$hs4_Len
+#   tubs hs4_duct innerRadius=250.0 outerRadius=300.0 length=$hs4_Len material=Fe color=1,1,1 kill=1
+#   solenoid hs4    coilName=hs4_coil current=$hs4_current kill=1
+
+endif
+
+
+if $TOYODASAN==1
+   param hs4_IR=300.0 hs4_OR=450.0 hs4_Len=500.0
+   param hs4_FZ=$hs3_FZ+$hs3_Len+5875.0
+   param hs4_CX=0.0 hs4_CZ=$hs4_FZ+$hs4_Len/2.
+   coil     hs4_coil innerRadius=$hs4_IR outerRadius=$hs4_OR length=$hs4_Len
+   tubs hs4_duct innerRadius=300.0 outerRadius=350.0 length=$hs4_Len material=Fe color=1,1,1 kill=1
+   solenoid hs4    coilName=hs4_coil current=$hs4_current kill=1
+endif
+
+if $TOYODASAN==2
+   param hs40_IR=300.0 hs40_OR=450.0 hs40_Len=500.0
+   param hs40_FZ=$hs3_FZ+$hs3_Len+5875.0
+   param hs40_CX=0.0 hs40_CZ=$hs40_FZ+$hs40_Len/2.
+   coil     hs40_coil innerRadius=$hs40_IR outerRadius=$hs40_OR length=$hs40_Len
+   tubs hs40_duct innerRadius=300.0 outerRadius=350.0 length=$hs40_Len material=Fe color=1,1,1 kill=1
+   solenoid hs40    coilName=hs40_coil current=$hs40_current kill=1
+
+   param hs4_IR=300.0 hs4_OR=450.0 hs4_Len=500.0
+   param hs4_FZ=$hs40_FZ+$hs40_Len+500
+   param hs4_CX=0.0 hs4_CZ=$hs4_FZ+$hs4_Len/2.
+   coil     hs4_coil innerRadius=$hs4_IR outerRadius=$hs4_OR length=$hs4_Len
+   tubs hs4_duct innerRadius=300.0 outerRadius=350.0 length=$hs4_Len material=Fe color=1,1,1 kill=1
+   solenoid hs4    coilName=hs4_coil current=$hs4_current kill=1
+
+endif
+
+   # HQ4
+   # Quad Triplet
+   param hq4_Len=400.
+   param hq4_FX=0.0
+   param hq4_FZ=$hs4_FZ+$hs4_Len+1075.
+#   param hq4_FZ=$hs4_FZ+$hs4_Len+500
+   param hq4_CZ=$hq4_FZ+$hq4_Len/2.
+if $LargeTriplet==0
+   genericquad HQ4 fieldLength=$hq4_Len apertureRadius=300. \
+                   poleTipRadius=250.000 gradient=$hq4_grad \
+                   ironLength=$hq4_Len ironRadius=400.0 ironColor=0,0,1 \
+                   fringe=0.2490,7.423,-2.125,1.119,-3.952,2.217
+endif
+if $LargeTriplet==1
+   genericquad HQ4 fieldLength=$hq4_Len apertureRadius=325. \
+                   poleTipRadius=275.000 gradient=$hq4_grad \
+                   ironLength=$hq4_Len ironRadius=425.0 ironColor=0,0,1 \
+                   fringe=0.2490,7.423,-2.125,1.119,-3.952,2.217
+endif
+if $LargeTriplet==2
+   genericquad HQ4 fieldLength=$hq4_Len apertureRadius=350. \
+                   poleTipRadius=300.000 gradient=$hq4_grad \
+                   ironLength=$hq4_Len ironRadius=450.0 ironColor=0,0,1 \
+                   fringe=0.2490,7.423,-2.125,1.119,-3.952,2.217
+endif
+   # HQ5
+   # Quad Triplet
+   param hq5_Len=400.
+   param hq5_FX=0.0
+   param hq5_FZ=$hq4_FZ+$hq4_Len+250.
+   param hq5_CZ=$hq5_FZ+$hq5_Len/2.
+if $LargeTriplet==0
+   genericquad HQ5 fieldLength=$hq5_Len apertureRadius=300. \
+                   poleTipRadius=250.000 gradient=$hq5_grad \
+                   ironLength=$hq5_Len ironRadius=400.0 ironColor=0,0,1 \
+                   fringe=0.2490,7.423,-2.125,1.119,-3.952,2.217
+endif
+if $LargeTriplet==1
+   genericquad HQ5 fieldLength=$hq5_Len apertureRadius=325. \
+                   poleTipRadius=275.000 gradient=$hq5_grad \
+                   ironLength=$hq5_Len ironRadius=425.0 ironColor=0,0,1 \
+                   fringe=0.2490,7.423,-2.125,1.119,-3.952,2.217
+endif
+if $LargeTriplet==2
+   genericquad HQ5 fieldLength=$hq5_Len apertureRadius=350. \
+                   poleTipRadius=300.000 gradient=$hq5_grad \
+                   ironLength=$hq5_Len ironRadius=450.0 ironColor=0,0,1 \
+                   fringe=0.2490,7.423,-2.125,1.119,-3.952,2.217
+endif
+   # HQ6
+   # Quad Triplet
+   param hq6_Len=400.
+   param hq6_FX=0.0
+   param hq6_FZ=$hq5_FZ+$hq5_Len+250.
+   param hq6_CZ=$hq6_FZ+$hq6_Len/2.
+if $LargeTriplet==0
+   genericquad HQ6 fieldLength=$hq6_Len apertureRadius=300. \
+                   poleTipRadius=250.000 gradient=$hq6_grad \
+                   ironLength=$hq6_Len ironRadius=400.0 ironColor=0,0,1 \
+                   fringe=0.2490,7.423,-2.125,1.119,-3.952,2.217
+endif
+if $LargeTriplet==1
+   genericquad HQ6 fieldLength=$hq6_Len apertureRadius=325. \
+                   poleTipRadius=275.000 gradient=$hq6_grad \
+                   ironLength=$hq6_Len ironRadius=425.0 ironColor=0,0,1 \
+                   fringe=0.2490,7.423,-2.125,1.119,-3.952,2.217
+endif
+if $LargeTriplet==2
+   genericquad HQ6 fieldLength=$hq6_Len apertureRadius=350. \
+                   poleTipRadius=300.000 gradient=$hq6_grad \
+                   ironLength=$hq6_Len ironRadius=450.0 ironColor=0,0,1 \
+                   fringe=0.2490,7.423,-2.125,1.119,-3.952,2.217
+endif
+
+   # HQ7
+   # Quad Triplet
+   #param hq7_Len=400.
+   #param hq7_FX=0.0
+   #param hq7_FZ=$hq6_FZ+$hq6_Len+250.
+   #param hq7_CZ=$hq7_FZ+$hq7_Len/2.
+   #genericquad HQ7 fieldLength=$hq7_Len apertureRadius=300. \
+   #                poleTipRadius=250.000 gradient=$hq7_grad \
+   #                ironLength=$hq7_Len ironRadius=400.0 ironColor=0,0,1 \
+   #                fringe=0.2490,7.423,-2.125,1.119,-3.952,2.217
+
+
+
+   # HS6 ... to replace HQ4-5-6 for better focussing.
+   param hs6_IR=300.0 hs6_OR=360.0 hs6_Len=500.0
+   param hs6_FZ=$hs4_FZ+$hs4_Len+1500.
+   param hs6_CX=0.0 hs6_CZ=$hs6_FZ+$hs6_Len/2.
+#   coil     hs6_coil innerRadius=$hs6_IR outerRadius=$hs6_OR length=$hs6_Len
+#   solenoid HS6     coilName=hs6_coil current=$hs6_current kill=1
+   tubs hs6_duct innerRadius=300.0 outerRadius=350.0 length=$hs6_Len material=Fe color=1,1,1 kill=1
+   fieldmap hs6 file=BLFieldMap/HS6b.BLFieldMap current=$hs6_current
+
+# end guard
+   param hs6_eg1_Len=100.0 hs6_eg2_Len=100.0 hs6_eg3_Len=50.0
+   tubs hs6_eg1 innerRadius=300.0 outerRadius=350.0 length=$hs6_eg1_Len material=Fe color=1,1,1 kill=1
+   polycone hs6_eg2 innerRadius=250.0,50.0 outerRadius=350.0,350.0 z=0,$hs6_eg2_Len color=1,1,1 kill=1
+   tubs hs6_eg3 innerRadius=50.0 outerRadius=100.0 length=$hs6_eg3_Len material=Fe color=1,1,1 kill=1
+
+endif
+
+###########################################################
+#################### magnet placement  ####################
+###########################################################
+if $load==3
+
+# HBB2
+   #place det_r300 z=$hbb2_FZ rename=hbb2ent_det
+   place hbb2 z=$hbb2_CZ
+   #place det_r300 z=$hbb2_FZ+$hbb2_Len rename=hbb2ext_det
+
+   #place det_r300 z=$hs4_FZ rename=hs4ent_det
+   place hs4 x=$hs4_CX z=$hs4_CZ
+   place hs4_duct x=$hs4_CX z=$hs4_CZ
+   #place det_r300 z=$hs4_FZ+$hs4_Len rename=hs4ext_det
+
+if $TOYODASAN==2
+   #place det_r300 z=$hs40_FZ rename=hs40ent_det
+   place hs40 x=$hs40_CX z=$hs40_CZ
+   place hs40_duct x=$hs40_CX z=$hs40_CZ
+   #place det_r300 z=$hs40_FZ+$hs40_Len rename=hs40ext_det
+
+endif
+
+   #place det_r300 z=$hq4_FZ-10. rename=hq4ent_det
+   place HQ4 x=$hq4_FX z=$hq4_CZ
+   #place det_r300 z=$hq5_FZ-10. rename=hq5ent_det
+   place HQ5 x=$hq5_FX z=$hq5_CZ
+   #place det_r300 z=$hq6_FZ-10. rename=hq6ent_det
+   place HQ6 x=$hq6_FX z=$hq6_CZ
+   #place det_r300 z=$hq6_FZ+$hq6_Len+10. rename=hq6ext_det
+#   place HQ7 x=$hq7_FX z=$hq7_CZ
+#   place det_r300 z=$hq7_FZ+$hq7_Len+10. rename=hq7ext_det
+
+   #place det_r300 z=$hq6_FZ+$hq6_Len+200. rename=focus_det_1
+   #place det_r300 z=$hq6_FZ+$hq6_Len+400. rename=focus_det_2
+   #place det_r300 z=$hq6_FZ+$hq6_Len+600. rename=focus_det_3
+   place det_r300 z=$hq6_FZ+$hq6_Len+800. rename=focus_det_4
+   place det_r300 z=$hq6_FZ+$hq6_Len+1000. rename=focus_det_5
+   place det_r300 z=$hq6_FZ+$hq6_Len+1200. rename=focus_det_6
+   #place det_r300 z=$hq6_FZ+$hq6_Len+1400. rename=focus_det_7
+   #place det_r300 z=$hq6_FZ+$hq6_Len+1600. rename=focus_det_8
+   #place det_r300 z=$hq6_FZ+$hq6_Len+1800. rename=focus_det_9
+#   place det_r300 z=$hq7_FZ+$hq7_Len+200. rename=focus_det_1
+#   place det_r300 z=$hq7_FZ+$hq7_Len+400. rename=focus_det_2
+#   place det_r300 z=$hq7_FZ+$hq7_Len+600. rename=focus_det_3
+#   place det_r300 z=$hq7_FZ+$hq7_Len+800. rename=focus_det_4
+#   place det_r300 z=$hq7_FZ+$hq7_Len+1000. rename=focus_det_5
+#   place det_r300 z=$hq7_FZ+$hq7_Len+1200. rename=focus_det_6
+#   place det_r300 z=$hq7_FZ+$hq7_Len+1400. rename=focus_det_7
+#   place det_r300 z=$hq7_FZ+$hq7_Len+1600. rename=focus_det_8
+#   place det_r300 z=$hq7_FZ+$hq7_Len+1800. rename=focus_det_9
+
+
+
+#   place det_r300 z=$hs6_FZ-10. rename=hs6ent_det
+#   place hs6 x=$hs6_CX z=$hs6_CZ
+#   place hs6_duct x=$hs6_CX z=$hs6_CZ
+#   place hs6_eg1 x=$hs6_CX z=$hs6_FZ+$hs6_Len+$hs6_eg1_Len/2.
+#   place hs6_eg2 x=$hs6_CX z=$hs6_FZ+$hs6_Len+$hs6_eg1_Len
+#   place hs6_eg3 x=$hs6_CX z=$hs6_FZ+$hs6_Len+$hs6_eg1_Len+$hs6_eg2_Len+$hs6_eg3_Len/2.
+#   place det_r300 z=$hs6_FZ+$hs6_Len+10. rename=hs6ext_det
+
+#   place det_r300 z=$hs6_FZ+$hs6_Len+200. rename=focus_det_1
+#   place det_r300 z=$hs6_FZ+$hs6_Len+400. rename=focus_det_2
+#   place det_r300 z=$hs6_FZ+$hs6_Len+600. rename=focus_det_3
+#   place det_r300 z=$hs6_FZ+$hs6_Len+800. rename=focus_det_4
+#   place det_r300 z=$hs6_FZ+$hs6_Len+1000. rename=focus_det_5
+#   place det_r300 z=$hs6_FZ+$hs6_Len+1200. rename=focus_det_6
+#   place det_r300 z=$hs6_FZ+$hs6_Len+1400. rename=focus_det_7
+#   place det_r300 z=$hs6_FZ+$hs6_Len+1600. rename=focus_det_8
+#   place det_r300 z=$hs6_FZ+$hs6_Len+1800. rename=focus_det_9
+
+#if $fit==0
+#profile file=$histoFile-profile.txt particle=mu+ require=sqrt(x*x+y*y)<500. zloop=0:26000:100
+#endif
+#profile file=$histoFile-profile_test.txt particle=mu+ zloop=0:26000:100
+
+endif
+
